@@ -1,0 +1,33 @@
+services:
+  site:
+    build:
+      dockerfile: Dockerfile
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.eden.entrypoints=http"
+      - "traefik.http.routers.eden.rule=Host(`eden.g4m1.biz`)"
+      - "traefik.http.middlewares.eden-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.eden.middlewares=eden-https-redirect"
+      - "traefik.http.routers.eden-secure.entrypoints=https"
+      - "traefik.http.routers.eden-secure.rule=Host(`eden.g4m1.biz`)"
+      - "traefik.http.routers.eden-secure.tls=true"
+      - "traefik.http.routers.eden-secure.service=eden"
+      - "traefik.http.middlewares.real-ip.headers.customrequestheaders.X-Real-IP=%[REMOTE_ADDR]"
+      - "traefik.http.routers.eden.middlewares=real-ip"
+      - "traefik.http.services.eden.loadbalancer.server.port=3000"
+      - "traefik.docker.network=proxy"
+    env_file:
+      - .env
+    volumes:
+      - ./panel/src:/app/src
+    environment:
+      - TZ=Europe/Moscow
+      - NODE_ENV=development
+    networks:
+      - proxy
+    restart: unless-stopped
+
+networks:
+  proxy:
+    external: true
+    name: proxy
