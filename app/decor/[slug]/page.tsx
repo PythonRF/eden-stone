@@ -35,8 +35,6 @@ type ApiResponse = {
 };
 
 const API_BASE =
-    process.env.API_BASE_INTERNAL || // например: http://app:4090 (докер-сеть)
-    process.env.NEXT_PUBLIC_API_BASE ||
     "https://eden.g4m1.biz";
 
 // ---- утилиты ----
@@ -79,7 +77,7 @@ async function getJson<T>(url: string, init?: RequestInit, ms = 8000): Promise<T
 async function fetchDecorBySlug(slug: string): Promise<DecorItem | null> {
     const qs = new URLSearchParams({ limit: "24", offset: "0", q: slug }).toString();
     try {
-        const data = await getJson<ApiResponse>(`${API_BASE}/api/v1/decors?${qs}`);
+        const data = await getJson<ApiResponse>(`https://eden.g4m1.biz/api/v1/decors?${qs}`);
         if (!Array.isArray(data.items)) return null;
         const exact = data.items.find((d) => d.slug === slug);
         return exact ? mapApiDecor(exact) : null;
