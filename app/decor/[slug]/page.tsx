@@ -5,6 +5,11 @@ import Link from "next/link";
 import type { DecorItem } from "@/lib/decor-data";
 import { toStoneType, toSurfaceType } from "@/lib/decor-data";
 
+// — приоритет IPv4 для Node DNS (серверный рантайм)
+import dns from "node:dns";
+dns.setDefaultResultOrder?.("ipv4first");
+
+// ---- типы API ----
 type ApiDecor = {
     id: number;
     slug: string;
@@ -27,11 +32,17 @@ type ApiResponse = {
     total: number;
     limit: number;
     offset: number;
-    facets?: Facets; // вместо any
+    facets?: Facets;
 };
 
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "https://eden.g4m1.biz";
+// На СЕРВЕРЕ ходим во внутренний адрес (докер-сеть), если задан.
+// Иначе — в публичный (для локальной отладки можно переопределить переменными).
+const API_BASE =
+    process.env.API_BASE_INTERNAL ||
+    process.env.NEXT_PUBLIC_API_BASE ||
+    "https://eden.g4m1.biz";
 
+// ---- утилиты ----
 function mapApiDecor(d: ApiDecor): DecorItem {
     return {
         id: String(d.id),
@@ -49,6 +60,18 @@ function mapApiDecor(d: ApiDecor): DecorItem {
     };
 }
 
+async function getJson<T>(url: string, init?: RequestInit, ms = 7000): Promise<T> {
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), ms);
+    try {
+        const res = await fetch(url, { ...init, signal: ctrl.signal, cache: "no-store" });
+        if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
+        return (await res.json()) as T;
+    } finally {
+        clearTimeout(timer);
+    }
+}
+
 async function fetchDecorBySlug(slug: string): Promise<DecorItem | null> {
     const qs = new URLSearchParams({
         limit: "24",
@@ -56,22 +79,18 @@ async function fetchDecorBySlug(slug: string): Promise<DecorItem | null> {
         q: slug,
     }).toString();
 
-    const res = await fetch(`${API_BASE}/api/v1/decors?${qs}`, { cache: "no-store" });
-    if (!res.ok) return null;
-
-    const data = (await res.json()) as ApiResponse;
+    const data = await getJson<ApiResponse>(`${API_BASE}/api/v1/decors?${qs}`);
     const exact = data.items.find((d) => d.slug === slug);
-    if (!exact) return null;
-
-    return mapApiDecor(exact);
+    return exact ? mapApiDecor(exact) : null;
 }
 
+// ---- страница ----
 export default async function DecorDetailsPage({
                                                    params,
                                                }: {
-    params: Promise<{ slug: string }>;
+    params: { slug: string };
 }) {
-    const { slug } = await params;
+    const { slug } = params;
 
     const item = await fetchDecorBySlug(slug);
     if (!item) return notFound();
@@ -105,7 +124,14 @@ export default async function DecorDetailsPage({
                         <div className="mt-3 grid grid-cols-4 gap-3">
                             {item.images.slice(1).map((img, idx) => (
                                 <div key={idx} className="relative aspect-square rounded-lg overflow-hidden border">
-                                    <Image src={img} alt={`${item.name} preview ${idx + 1}`} fill className="object-cover" sizes="25vw" loading="lazy" />
+                                    <Image
+                                        src={img}
+                                        alt={`${item.name} preview ${idx + 1}`}
+                                        fill
+                                        className="object-cover"
+                                        sizes="25vw"
+                                        loading="lazy"
+                                    />
                                 </div>
                             ))}
                         </div>
