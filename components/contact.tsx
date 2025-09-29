@@ -105,8 +105,7 @@ export function Contact() {
                     </div>
                     <div>
                       <h3 className="font-semibold mb-1">Телефон</h3>
-                      <p className="text-muted-foreground">+7 (495) 123-45-67</p>
-                      <p className="text-muted-foreground">+7 (495) 123-45-68</p>
+                      <p className="text-muted-foreground">+7 (925) 428-16-12</p>
                     </div>
                   </div>
                 </CardContent>
@@ -120,8 +119,7 @@ export function Contact() {
                     </div>
                     <div>
                       <h3 className="font-semibold mb-1">Email</h3>
-                      <p className="text-muted-foreground">info@Eden-stone.ru</p>
-                      <p className="text-muted-foreground">sales@Eden-stone.ru</p>
+                      <p className="text-muted-foreground">zakaz@eden-stone.ru</p>
                     </div>
                   </div>
                 </CardContent>
@@ -135,7 +133,7 @@ export function Contact() {
                     </div>
                     <div>
                       <h3 className="font-semibold mb-1">Адрес</h3>
-                      <p className="text-muted-foreground">г. Москва, ул. Производственная, д. 15</p>
+                      <p className="text-muted-foreground">г.Реутов, ул.Проспект мира, д26</p>
                     </div>
                   </div>
                 </CardContent>
@@ -149,9 +147,10 @@ export function Contact() {
                     </div>
                     <div>
                       <h3 className="font-semibold mb-1">Режим работы</h3>
-                      <p className="text-muted-foreground">Пн-Пт: 9:00 - 18:00</p>
-                      <p className="text-muted-foreground">Сб: 10:00 - 16:00</p>
+                      <p className="text-muted-foreground">Пн-Пт: 9:00 - 20:00</p>
+                      <p className="text-muted-foreground">Сб: 9:00 - 18:00</p>
                       <p className="text-muted-foreground">Вс: выходной</p>
+                      <p className="text-muted-foreground">(по предварительной записи)</p>
                     </div>
                   </div>
                 </CardContent>

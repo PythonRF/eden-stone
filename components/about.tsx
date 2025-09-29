@@ -39,15 +39,15 @@ export function About() {
               </div>
             </div>
 
-            <Button size="lg" className="text-lg px-8">
-              Узнать больше о нас
-            </Button>
+            {/*<Button size="lg" className="text-lg px-8">*/}
+            {/*  Узнать больше о нас*/}
+            {/*</Button>*/}
           </div>
 
           <div className="relative">
             <div className="aspect-[4/3] rounded-2xl overflow-hidden bg-muted">
               <img
-                src="/modern-stone-manufacturing-workshop.png"
+                src="/modern-stone-manufacturing-workshop.jpg"
                 alt="Производственный цех по обработке искусственного камня"
                 className="w-full h-full object-cover"
               />

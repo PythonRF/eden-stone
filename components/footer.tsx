@@ -70,15 +70,15 @@ export function Footer() {
             <div className="space-y-3 text-sm opacity-80">
               <div className="flex items-center space-x-2">
                 <Phone className="h-4 w-4" />
-                <span>+7 (495) 123-45-67</span>
+                <span>+7 (925) 428-16-12</span>
               </div>
               <div className="flex items-center space-x-2">
                 <Mail className="h-4 w-4" />
-                <span>info@Eden-stone.ru</span>
+                <span>zakaz@eden-stone.ru</span>
               </div>
               <div className="flex items-start space-x-2">
                 <MapPin className="h-4 w-4 mt-0.5" />
-                <span>г. Москва, ул. Производственная, д. 15</span>
+                <span>г.Реутов, ул.Проспект мира, д26</span>
               </div>
             </div>
           </div>

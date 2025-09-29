@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Menu, X, Phone } from "lucide-react"
+import Link from "next/link"
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -12,13 +13,13 @@ export function Header() {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center space-x-4">
-            <h1 className="text-xl font-bold text-primary">Eden-stone</h1>
+              <Link href="/"><h1 className="text-xl font-bold text-primary">Eden-stone</h1></Link>
           </div>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
             <a href="#products" className="text-foreground hover:text-primary transition-colors">
-              Продукция
+              Проекты
             </a>
             <a href="#services" className="text-foreground hover:text-primary transition-colors">
               Услуги
@@ -38,7 +39,7 @@ export function Header() {
           <div className="hidden lg:flex items-center space-x-4">
             <div className="flex items-center space-x-2 text-sm">
               <Phone className="h-4 w-4 text-primary" />
-              <span>+7 (495) 123-45-67</span>
+              <span>+7 (925) 428-16-12</span>
             </div>
             <Button>Заказать звонок</Button>
           </div>

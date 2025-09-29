@@ -1,16 +1,16 @@
 import { Card, CardContent } from "@/components/ui/card"
-import { Ruler, Truck, Shield, Clock, Users, Award } from "lucide-react"
+import {Ruler, Truck, Shield, Clock, Users, Award, MessageCircle} from "lucide-react"
 
 const features = [
-  {
-    icon: Ruler,
-    title: "Бесплатный замер",
-    description: "Выезжаем на объект для точного замера и консультации абсолютно бесплатно",
-  },
+    {
+        icon: MessageCircle,
+        title: "Бесплатная консультация",
+        description: "Помогаем подобрать оптимальное решение из искусственного камня и отвечаем на все ваши вопросы бесплатно",
+    },
   {
     icon: Clock,
     title: "Быстрое изготовление",
-    description: "Изготавливаем изделия в срок от 3 до 7 рабочих дней в зависимости от сложности",
+    description: "Изготавливаем изделия в срок от 3 до 14 рабочих дней в зависимости от сложности",
   },
   {
     icon: Truck,
