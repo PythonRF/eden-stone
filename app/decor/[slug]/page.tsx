@@ -5,9 +5,8 @@ import Link from "next/link";
 import type { DecorItem } from "@/lib/decor-data";
 import { toStoneType, toSurfaceType } from "@/lib/decor-data";
 
-// — приоритет IPv4 для Node DNS (серверный рантайм)
-import dns from "node:dns";
-dns.setDefaultResultOrder?.("ipv4first");
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs"; // гарантируем Node-рантайм, без edge
 
 // ---- типы API ----
 type ApiDecor = {
@@ -35,10 +34,8 @@ type ApiResponse = {
     facets?: Facets;
 };
 
-// На СЕРВЕРЕ ходим во внутренний адрес (докер-сеть), если задан.
-// Иначе — в публичный (для локальной отладки можно переопределить переменными).
 const API_BASE =
-    process.env.API_BASE_INTERNAL ||
+    process.env.API_BASE_INTERNAL || // например: http://app:4090 (докер-сеть)
     process.env.NEXT_PUBLIC_API_BASE ||
     "https://eden.g4m1.biz";
 
@@ -60,12 +57,19 @@ function mapApiDecor(d: ApiDecor): DecorItem {
     };
 }
 
-async function getJson<T>(url: string, init?: RequestInit, ms = 7000): Promise<T> {
+async function getJson<T>(url: string, init?: RequestInit, ms = 8000): Promise<T> {
     const ctrl = new AbortController();
     const timer = setTimeout(() => ctrl.abort(), ms);
     try {
-        const res = await fetch(url, { ...init, signal: ctrl.signal, cache: "no-store" });
-        if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
+        const res = await fetch(url, {
+            ...init,
+            // важное: серверный рендер не должен кэшировать
+            cache: "no-store",
+            signal: ctrl.signal,
+        });
+        if (!res.ok) {
+            throw new Error(`HTTP ${res.status} for ${url}`);
+        }
         return (await res.json()) as T;
     } finally {
         clearTimeout(timer);
@@ -73,20 +77,24 @@ async function getJson<T>(url: string, init?: RequestInit, ms = 7000): Promise<T
 }
 
 async function fetchDecorBySlug(slug: string): Promise<DecorItem | null> {
-    const qs = new URLSearchParams({
-        limit: "24",
-        offset: "0",
-        q: slug,
-    }).toString();
-
-    const data = await getJson<ApiResponse>(`${API_BASE}/api/v1/decors?${qs}`);
-    const exact = data.items.find((d) => d.slug === slug);
-    return exact ? mapApiDecor(exact) : null;
+    const qs = new URLSearchParams({ limit: "24", offset: "0", q: slug }).toString();
+    try {
+        const data = await getJson<ApiResponse>(`${API_BASE}/api/v1/decors?${qs}`);
+        if (!Array.isArray(data.items)) return null;
+        const exact = data.items.find((d) => d.slug === slug);
+        return exact ? mapApiDecor(exact) : null;
+    } catch (e) {
+        // лог только на сервере — поможет по digest
+        console.error("[decor details] fetch failed:", e);
+        return null; // спровоцируем notFound()
+    }
 }
 
-// ---- страница ----
-export default async function DecorDetailsPage({ params, }: { params: Promise<{ slug: string }>; })
-{
+export default async function DecorDetailsPage({
+                                                   params,
+                                               }: {
+    params: Promise<{ slug: string }>;
+}) {
     const { slug } = await params;
 
     const item = await fetchDecorBySlug(slug);
@@ -169,5 +177,3 @@ export default async function DecorDetailsPage({ params, }: { params: Promise<{ 
         </section>
     );
 }
-
-export const dynamic = "force-dynamic";
