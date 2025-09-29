@@ -34,8 +34,6 @@ type ApiResponse = {
     facets?: Facets;
 };
 
-const API_BASE =
-    "https://eden.g4m1.biz";
 
 // ---- утилиты ----
 function mapApiDecor(d: ApiDecor): DecorItem {
