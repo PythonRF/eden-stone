@@ -159,9 +159,15 @@ export default function DecorCatalogPage() {
                 setOffset(nextOffset + mapped.length);
                 setTotal((t) => data.total ?? t);
             }
-        } catch (e: any) {
+        } catch (e: unknown) {
             if (mySeq !== reqSeq.current) return;
-            setErr(e?.message || "Request failed");
+            const message =
+                e instanceof Error
+                    ? e.message
+                    : typeof e === "string"
+                        ? e
+                        : "Request failed";
+            setErr(message);
         } finally {
             if (mySeq === reqSeq.current) setLoading(false);
         }

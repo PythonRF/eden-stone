@@ -1,5 +1,5 @@
 import { Card, CardContent } from "@/components/ui/card"
-import {Ruler, Truck, Shield, Clock, Users, Award, MessageCircle} from "lucide-react"
+import { Truck, Shield, Clock, Users, Award, MessageCircle} from "lucide-react"
 
 const features = [
     {
