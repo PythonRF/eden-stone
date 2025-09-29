@@ -38,7 +38,7 @@ type ApiResponse = {
     };
 };
 
-const API_BASE = "http://127.0.0.1:4090";
+const API_BASE = "https://eden.g4m1.biz";
 
 /** API → DecorItem */
 function mapApiDecor(d: ApiDecor): DecorItem {

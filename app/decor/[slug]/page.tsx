@@ -29,7 +29,7 @@ type ApiResponse = {
 };
 
 // Лучше вынести в .env: NEXT_PUBLIC_API_BASE
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://127.0.0.1:4090";
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "https://eden.g4m1.biz";
 
 function mapApiDecor(d: ApiDecor): DecorItem {
     return {
