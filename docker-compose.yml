@@ -5,11 +5,11 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.eden.entrypoints=http"
-      - "traefik.http.routers.eden.rule=Host(`eden.g4m1.biz`)"
+      - "traefik.http.routers.eden.rule=Host(`eden-stone.ru`)"
       - "traefik.http.middlewares.eden-https-redirect.redirectscheme.scheme=https"
       - "traefik.http.routers.eden.middlewares=eden-https-redirect"
       - "traefik.http.routers.eden-secure.entrypoints=https"
-      - "traefik.http.routers.eden-secure.rule=Host(`eden.g4m1.biz`)"
+      - "traefik.http.routers.eden-secure.rule=Host(`eden-stone.ru`)"
       - "traefik.http.routers.eden-secure.tls=true"
       - "traefik.http.routers.eden-secure.service=eden"
       - "traefik.http.middlewares.real-ip.headers.customrequestheaders.X-Real-IP=%[REMOTE_ADDR]"

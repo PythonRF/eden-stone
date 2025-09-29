@@ -38,7 +38,7 @@ type ApiResponse = {
     };
 };
 
-const API_BASE = "https://eden.g4m1.biz";
+const API_BASE = "https://eden-stone.ru";
 
 /** API → DecorItem */
 function mapApiDecor(d: ApiDecor): DecorItem {
