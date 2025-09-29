@@ -85,12 +85,9 @@ async function fetchDecorBySlug(slug: string): Promise<DecorItem | null> {
 }
 
 // ---- страница ----
-export default async function DecorDetailsPage({
-                                                   params,
-                                               }: {
-    params: { slug: string };
-}) {
-    const { slug } = params;
+export default async function DecorDetailsPage({ params, }: { params: Promise<{ slug: string }>; })
+{
+    const { slug } = await params;
 
     const item = await fetchDecorBySlug(slug);
     if (!item) return notFound();
