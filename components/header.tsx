@@ -23,7 +23,7 @@ export function Header() {
             </a>
               <Link href="/decor">
             <span className="text-foreground hover:text-primary transition-colors">
-              Проекты
+              Каталог декоров
             </span></Link>
             <a href="#services" className="text-foreground hover:text-primary transition-colors">
               Услуги
