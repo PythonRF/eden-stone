@@ -14,55 +14,11 @@ export function Footer() {
           </div>
 
           <div className="space-y-4">
-            <h4 className="font-semibold text-primary-foreground">Продукция</h4>
-            <ul className="space-y-2 text-sm opacity-80">
-              <li>
-                <a href="#" className="hover:opacity-100 transition-opacity">
-                  Кварцевые столешницы
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:opacity-100 transition-opacity">
-                  Акриловые столешницы
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:opacity-100 transition-opacity">
-                  Подоконники
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:opacity-100 transition-opacity">
-                  Барные стойки
-                </a>
-              </li>
-            </ul>
+
           </div>
 
           <div className="space-y-4">
-            <h4 className="font-semibold text-primary-foreground">Услуги</h4>
-            <ul className="space-y-2 text-sm opacity-80">
-              <li>
-                <a href="#" className="hover:opacity-100 transition-opacity">
-                  Замер и консультация
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:opacity-100 transition-opacity">
-                  Изготовление
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:opacity-100 transition-opacity">
-                  Доставка
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:opacity-100 transition-opacity">
-                  Установка
-                </a>
-              </li>
-            </ul>
+
           </div>
 
           <div className="space-y-4">
