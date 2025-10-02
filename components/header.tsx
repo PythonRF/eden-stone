@@ -30,17 +30,22 @@ export function Header() {
     const [phone, setPhone] = useState("")
     const [email, setEmail] = useState("")
     const [prefWhatsApp, setPrefWhatsApp] = useState(false)
-    const [callToday, setCallToday] = useState(false)
     const [consent, setConsent] = useState(false)
     const [extra, setExtra] = useState("")
     const [submitting, setSubmitting] = useState(false)
     const [err, setErr] = useState<string | null>(null)
 
+
+    const [kitchen, setKitchen] = useState(false)
+    const [bath, setBath] = useState(false)
+
+
     const resetForm = () => {
         setPhone("")
         setEmail("")
         setPrefWhatsApp(false)
-        setCallToday(false)
+        setKitchen(false)
+        setBath(false)
         setConsent(false)
         setExtra("")
         setErr(null)
@@ -222,21 +227,15 @@ export function Header() {
                             </div>
 
                             <div className="grid gap-2">
-                                <Label>Опции</Label>
+                                <Label>Место установки</Label>
                                 <div className="flex flex-col gap-2">
                                     <label className="flex items-center gap-2">
-                                        <Checkbox checked={callToday} onCheckedChange={(v) => setCallToday(Boolean(v))} />
-                                        <span className="text-sm">Перезвонить сегодня</span>
+                                        <Checkbox checked={kitchen} onCheckedChange={(v) => setKitchen(Boolean(v))} />
+                                        <span className="text-sm">Кухня</span>
                                     </label>
                                     <label className="flex items-center gap-2">
-                                        <Checkbox checked={prefWhatsApp} onCheckedChange={(v) => setPrefWhatsApp(Boolean(v))} />
-                                        <span className="text-sm">Предпочитаю WhatsApp</span>
-                                    </label>
-                                    <label className="flex items-center gap-2">
-                                        <Checkbox checked={consent} onCheckedChange={(v) => setConsent(Boolean(v))} />
-                                        <span className="text-sm">
-                      Согласен с обработкой персональных данных *
-                    </span>
+                                        <Checkbox checked={bath} onCheckedChange={(v) => setBath(Boolean(v))} />
+                                        <span className="text-sm">Ванная</span>
                                     </label>
                                 </div>
                             </div>
@@ -251,6 +250,24 @@ export function Header() {
                                     onChange={(e) => setExtra(e.target.value)}
                                 />
                             </div>
+
+                            <div className="grid gap-2">
+                                <Label>Опции</Label>
+                                <div className="flex flex-col gap-2">
+                                    <label className="flex items-center gap-2">
+                                        <Checkbox checked={prefWhatsApp} onCheckedChange={(v) => setPrefWhatsApp(Boolean(v))} />
+                                        <span className="text-sm">Предпочитаю WhatsApp</span>
+                                    </label>
+                                    <label className="flex items-center gap-2">
+                                        <Checkbox checked={consent} onCheckedChange={(v) => setConsent(Boolean(v))} />
+                                        <span className="text-sm">
+                      Согласен с обработкой персональных данных *
+                    </span>
+                                    </label>
+                                </div>
+                            </div>
+
+
 
                             {err && <p className="text-sm text-red-500">{err}</p>}
                         </div>
