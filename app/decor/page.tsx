@@ -134,26 +134,22 @@ export default function DecorCatalogPage() {
             const mapped = data.items.map(mapApiDecor);
 
             if (isReset) {
-                setItems(mapped);
-                setOffset(mapped.length);
-                setTotal(data.total ?? mapped.length);
+                setItems(mapped)
+                setOffset(mapped.length)
+                setTotal(data.total ?? mapped.length)
 
-                // фасеты обновляем на «сбросе» (первой загрузке)
                 const stoneTypesSafe = (data.facets?.stone_types ?? [])
                     .map((s) => toStoneType(s as string))
-                    .filter((v, i, arr) => arr.indexOf(v) === i);
+                    .filter((v, i, arr) => arr.indexOf(v) === i)
                 const surfacesSafe = (data.facets?.surfaces ?? [])
                     .map((s) => toSurfaceType(s as string))
-                    .filter((v, i, arr) => arr.indexOf(v) === i);
-                setAllStoneTypes(stoneTypesSafe);
-                setAllSurfaces(surfacesSafe);
-                if (data.facets?.brands?.length) {
-                    setAllBrands([...new Set(data.facets.brands)].sort((a, b) => a.localeCompare(b)));
-                } else {
-                    const brandsSet = new Set<string>();
-                    mapped.forEach((i) => brandsSet.add(i.brand));
-                    setAllBrands(Array.from(brandsSet).sort((a, b) => a.localeCompare(b)));
-                }
+                    .filter((v, i, arr) => arr.indexOf(v) === i)
+
+                setAllStoneTypes(stoneTypesSafe)
+                setAllSurfaces(surfacesSafe)
+
+                // ВАЖНО: всегда берем brands из facets, не из mapped
+                setAllBrands([...(data.facets?.brands ?? [])].sort((a, b) => a.localeCompare(b)))
             } else {
                 setItems((prev) => [...prev, ...mapped]);
                 setOffset(nextOffset + mapped.length);
