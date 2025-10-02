@@ -8,8 +8,8 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Filter, X } from "lucide-react";
 import type { StoneType, SurfaceType } from "@/lib/decor-data";
-import {Separator} from "@radix-ui/react-select";
-import {Accordion,  AccordionContent, AccordionItem, AccordionTrigger} from "../ui/accordion";
+import { Separator } from "@radix-ui/react-select";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../ui/accordion";
 import { ScrollArea } from "../ui/scroll-area";
 import {
     Sheet,
@@ -18,7 +18,7 @@ import {
     SheetFooter,
     SheetHeader,
     SheetTitle,
-    SheetTrigger
+    SheetTrigger,
 } from "../ui/sheet";
 
 export type FiltersState = {
@@ -83,7 +83,14 @@ function FiltersPanel({
         return allBrands.filter((b) => b.toLowerCase().includes(q));
     }, [brandQuery, allBrands]);
 
-    // На маленьких экранах показываем меньше элементов, но это контролирует контейнер
+    // общая клавиатурная поддержка для бейджей
+    const onBadgeKeyDown = (e: React.KeyboardEvent, cb: () => void) => {
+        if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            cb();
+        }
+    };
+
     return (
         <aside className="space-y-4">
             <div className="flex items-center justify-between">
@@ -99,21 +106,49 @@ function FiltersPanel({
             {hasAny && (
                 <div className="flex flex-wrap gap-2">
                     {values.stoneTypes.map((t) => (
-                        <Badge key={t} variant="secondary" className="gap-1">
+                        <Badge
+                            key={t}
+                            variant="secondary"
+                            role="button"
+                            tabIndex={0}
+                            title="Убрать"
+                            className="gap-1 cursor-pointer select-none"
+                            onClick={() => toggle("stoneTypes", t)}
+                            onKeyDown={(e) => onBadgeKeyDown(e, () => toggle("stoneTypes", t))}
+                        >
                             {t}
-                            <X className="h-3 w-3 cursor-pointer" onClick={() => toggle("stoneTypes", t)} />
+                            {/* X — декоративная, кликается весь бейдж */}
+                            <X className="h-3 w-3 pointer-events-none opacity-70" />
                         </Badge>
                     ))}
                     {values.brands.map((b) => (
-                        <Badge key={b} variant="secondary" className="gap-1">
+                        <Badge
+                            key={b}
+                            variant="secondary"
+                            role="button"
+                            tabIndex={0}
+                            title="Убрать"
+                            className="gap-1 cursor-pointer select-none"
+                            onClick={() => toggle("brands", b)}
+                            onKeyDown={(e) => onBadgeKeyDown(e, () => toggle("brands", b))}
+                        >
                             {b}
-                            <X className="h-3 w-3 cursor-pointer" onClick={() => toggle("brands", b)} />
+                            <X className="h-3 w-3 pointer-events-none opacity-70" />
                         </Badge>
                     ))}
                     {values.surfaces.map((s) => (
-                        <Badge key={s} variant="secondary" className="gap-1">
+                        <Badge
+                            key={s}
+                            variant="secondary"
+                            role="button"
+                            tabIndex={0}
+                            title="Убрать"
+                            className="gap-1 cursor-pointer select-none"
+                            onClick={() => toggle("surfaces", s)}
+                            onKeyDown={(e) => onBadgeKeyDown(e, () => toggle("surfaces", s))}
+                        >
                             {s}
-                            <X className="h-3 w-3 cursor-pointer" onClick={() => toggle("surfaces", s)} />
+                            <X className="h-3 w-3 pointer-events-none opacity-70" />
                         </Badge>
                     ))}
                 </div>
@@ -129,7 +164,10 @@ function FiltersPanel({
                     <AccordionContent className="pt-1 space-y-2">
                         {allStoneTypes.map((t) => (
                             <label key={t} className="flex items-center gap-3">
-                                <Checkbox checked={values.stoneTypes.includes(t)} onCheckedChange={() => toggle("stoneTypes", t)} />
+                                <Checkbox
+                                    checked={values.stoneTypes.includes(t)}
+                                    onCheckedChange={() => toggle("stoneTypes", t)}
+                                />
                                 <span className="text-sm">{t}</span>
                             </label>
                         ))}
@@ -151,7 +189,10 @@ function FiltersPanel({
                                 {filteredBrands.length ? (
                                     filteredBrands.map((b) => (
                                         <label key={b} className="flex items-center gap-3">
-                                            <Checkbox checked={values.brands.includes(b)} onCheckedChange={() => toggle("brands", b)} />
+                                            <Checkbox
+                                                checked={values.brands.includes(b)}
+                                                onCheckedChange={() => toggle("brands", b)}
+                                            />
                                             <span className="text-sm">{b}</span>
                                         </label>
                                     ))
@@ -161,7 +202,12 @@ function FiltersPanel({
                             </div>
                         </ScrollArea>
                         {values.brands.length > 0 && (
-                            <Button variant="ghost" size="sm" className="h-8 px-2" onClick={() => onChange({ ...values, brands: [] })}>
+                            <Button
+                                variant="ghost"
+                                size="sm"
+                                className="h-8 px-2"
+                                onClick={() => onChange({ ...values, brands: [] })}
+                            >
                                 Очистить бренды
                             </Button>
                         )}
@@ -174,7 +220,10 @@ function FiltersPanel({
                     <AccordionContent className="pt-1 space-y-2">
                         {allSurfaces.map((s) => (
                             <label key={s} className="flex items-center gap-3">
-                                <Checkbox checked={values.surfaces.includes(s)} onCheckedChange={() => toggle("surfaces", s)} />
+                                <Checkbox
+                                    checked={values.surfaces.includes(s)}
+                                    onCheckedChange={() => toggle("surfaces", s)}
+                                />
                                 <span className="text-sm">{s}</span>
                             </label>
                         ))}
@@ -233,7 +282,9 @@ function MobileFilters({
                         Сбросить
                     </Button>
                     <SheetClose asChild>
-                        <Button className="flex-1">Показать{typeof resultCount === "number" ? ` (${resultCount})` : ""}</Button>
+                        <Button className="flex-1">
+                            Показать{typeof resultCount === "number" ? ` (${resultCount})` : ""}
+                        </Button>
                     </SheetClose>
                 </SheetFooter>
             </SheetContent>
