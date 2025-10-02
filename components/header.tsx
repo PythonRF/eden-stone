@@ -87,8 +87,8 @@ export function Header() {
 
             resetForm()
             setIsDialogOpen(false)
-        } catch (e: any) {
-            setErr(e?.message || "Не удалось отправить заявку")
+        } catch {
+            setErr("Не удалось отправить заявку")
         } finally {
             setSubmitting(false)
         }
