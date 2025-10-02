@@ -1,4 +1,4 @@
-// app/decor/page.tsx
+// file: app/decor/page.tsx
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -58,14 +58,6 @@ function mapApiDecor(d: ApiDecor): DecorItem {
     };
 }
 
-function buildQuery(params: Record<string, string | number | undefined>) {
-    const usp = new URLSearchParams();
-    Object.entries(params).forEach(([k, v]) => {
-        if (v !== undefined && v !== "") usp.set(k, String(v));
-    });
-    return usp.toString();
-}
-
 export default function DecorCatalogPage() {
     const [filters, setFilters] = useState<FiltersState>(defaultFilters);
     const [sort, setSort] = useState<SortKey>("newest");
@@ -86,13 +78,15 @@ export default function DecorCatalogPage() {
 
     // Чтобы сбрасывать ленту при изменении параметров, считаем ключ запроса
     const queryKey = useMemo(() => {
-        const stoneType = filters.stoneTypes[0] ?? "";
-        const surface = filters.surfaces[0] ?? "";
-        const brand = filters.brands[0] ?? "";
         const sortParam =
             sort === "newest" ? "created_at_desc" :
                 sort === "price_asc" ? "price_asc" : "price_desc";
-        return JSON.stringify({ stoneType, surface, brand, sortParam, limit });
+        return JSON.stringify({
+            stoneTypes: [...filters.stoneTypes].sort(),
+            surfaces: [...filters.surfaces].sort(),
+            brands: [...filters.brands].sort(),
+            sortParam, limit,
+        });
     }, [filters.stoneTypes, filters.surfaces, filters.brands, sort, limit]);
 
     // защита от гонок ответов
@@ -101,31 +95,28 @@ export default function DecorCatalogPage() {
     const loadPage = useCallback(async (opts?: { reset?: boolean }) => {
         const isReset = !!opts?.reset;
 
-        // сервер сейчас принимает по одному значению каждого фильтра
-        const stoneType = filters.stoneTypes[0];
-        const surface = filters.surfaces[0];
-        const brand = filters.brands[0];
-
         const sortParam =
             sort === "newest" ? "created_at_desc" :
                 sort === "price_asc" ? "price_asc" : "price_desc";
 
         const nextOffset = isReset ? 0 : offset;
-        const qs = buildQuery({
-            limit,
-            offset: nextOffset,
-            sort: sortParam,
-            stone_type: stoneType,
-            surface: surface,
-            brand: brand,
-        });
+
+        // собираем URLSearchParams с множественными значениями
+        const usp = new URLSearchParams();
+        usp.set("limit", String(limit));
+        usp.set("offset", String(nextOffset));
+        usp.set("sort", sortParam);
+
+        filters.stoneTypes.forEach((t) => usp.append("stone_type", t));
+        filters.surfaces.forEach((s) => usp.append("surface", s));
+        filters.brands.forEach((b) => usp.append("brand", b));
 
         setLoading(true);
         setErr(null);
         const mySeq = ++reqSeq.current;
 
         try {
-            const res = await fetch(`${API_BASE}/api/v1/decors?${qs}`, { cache: "no-store" });
+            const res = await fetch(`${API_BASE}/api/v1/decors?${usp.toString()}`, { cache: "no-store" });
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
             const data: ApiResponse = await res.json();
 
@@ -134,22 +125,21 @@ export default function DecorCatalogPage() {
             const mapped = data.items.map(mapApiDecor);
 
             if (isReset) {
-                setItems(mapped)
-                setOffset(mapped.length)
-                setTotal(data.total ?? mapped.length)
+                setItems(mapped);
+                setOffset(mapped.length);
+                setTotal(data.total ?? mapped.length);
 
+                // фасеты — всегда из ответа бэка
                 const stoneTypesSafe = (data.facets?.stone_types ?? [])
                     .map((s) => toStoneType(s as string))
-                    .filter((v, i, arr) => arr.indexOf(v) === i)
+                    .filter((v, i, arr) => arr.indexOf(v) === i);
                 const surfacesSafe = (data.facets?.surfaces ?? [])
                     .map((s) => toSurfaceType(s as string))
-                    .filter((v, i, arr) => arr.indexOf(v) === i)
+                    .filter((v, i, arr) => arr.indexOf(v) === i);
 
-                setAllStoneTypes(stoneTypesSafe)
-                setAllSurfaces(surfacesSafe)
-
-                // ВАЖНО: всегда берем brands из facets, не из mapped
-                setAllBrands([...(data.facets?.brands ?? [])].sort((a, b) => a.localeCompare(b)))
+                setAllStoneTypes(stoneTypesSafe);
+                setAllSurfaces(surfacesSafe);
+                setAllBrands([...(data.facets?.brands ?? [])].sort((a, b) => a.localeCompare(b)));
             } else {
                 setItems((prev) => [...prev, ...mapped]);
                 setOffset(nextOffset + mapped.length);
@@ -158,11 +148,8 @@ export default function DecorCatalogPage() {
         } catch (e: unknown) {
             if (mySeq !== reqSeq.current) return;
             const message =
-                e instanceof Error
-                    ? e.message
-                    : typeof e === "string"
-                        ? e
-                        : "Request failed";
+                e instanceof Error ? e.message :
+                    typeof e === "string" ? e : "Request failed";
             setErr(message);
         } finally {
             if (mySeq === reqSeq.current) setLoading(false);
@@ -211,9 +198,7 @@ export default function DecorCatalogPage() {
                 <div className="lg:col-span-3">
                     <DecorFilters
                         values={filters}
-                        onChange={(v) => {
-                            setFilters(v);
-                        }}
+                        onChange={(v) => setFilters(v)}
                         allBrands={allBrands}
                         allStoneTypes={allStoneTypes}
                         allSurfaces={allSurfaces}
