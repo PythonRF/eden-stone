@@ -39,7 +39,7 @@ export function Header() {
           <div className="hidden lg:flex items-center space-x-4">
             <div className="flex items-center space-x-2 text-sm">
               <Phone className="h-4 w-4 text-primary" />
-              <span>+7 (925) 428-16-12</span>
+              <span>+7 (925) 724-49-95</span>
             </div>
             <Button>Заказать звонок</Button>
           </div>

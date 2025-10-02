@@ -105,7 +105,7 @@ export function Contact() {
                     </div>
                     <div>
                       <h3 className="font-semibold mb-1">Телефон</h3>
-                      <p className="text-muted-foreground">+7 (925) 428-16-12</p>
+                      <p className="text-muted-foreground">+7 (925) 724-49-95</p>
                     </div>
                   </div>
                 </CardContent>

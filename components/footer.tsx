@@ -70,7 +70,7 @@ export function Footer() {
             <div className="space-y-3 text-sm opacity-80">
               <div className="flex items-center space-x-2">
                 <Phone className="h-4 w-4" />
-                <span>+7 (925) 428-16-12</span>
+                <span>+7 (925) 724-49-95</span>
               </div>
               <div className="flex items-center space-x-2">
                 <Mail className="h-4 w-4" />
