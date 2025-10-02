@@ -21,6 +21,13 @@ export function Header() {
                             <h1 className="text-xl font-bold text-primary">Eden-stone</h1>
                         </Link>
                     </div>
+                    <div className="hidden lg:flex items-center space-x-4">
+                        <div className="flex items-center space-x-2 text-sm">
+                            <Phone className="h-4 w-4 text-primary" />
+                            <span>+7 (925) 724-49-95</span>
+                        </div>
+                        <Button>Заказать звонок</Button>
+                    </div>
 
                     {/* Всё остальное скрываем на /decor */}
                     {!isDecor && (
