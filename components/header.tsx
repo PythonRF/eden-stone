@@ -81,7 +81,7 @@ export function Header() {
         try {
             // TODO: сюда вставь свой запрос
             // пример:
-            await fetch("https://https://eden-stone.ru/api/v1/callback", {
+            await fetch("https://eden-stone.ru/api/v1/callback", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ phone, email, prefWhatsApp, bath, kitchen, extra }),
