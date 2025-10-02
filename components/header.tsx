@@ -21,6 +21,10 @@ export function Header() {
             <a href="#products" className="text-foreground hover:text-primary transition-colors">
               Проекты
             </a>
+              <Link href="/decor">
+            <span className="text-foreground hover:text-primary transition-colors">
+              Проекты
+            </span></Link>
             <a href="#services" className="text-foreground hover:text-primary transition-colors">
               Услуги
             </a>
