@@ -81,11 +81,11 @@ export function Header() {
         try {
             // TODO: сюда вставь свой запрос
             // пример:
-            // await fetch("/api/callback", {
-            //   method: "POST",
-            //   headers: { "Content-Type": "application/json" },
-            //   body: JSON.stringify({ phone, email, prefWhatsApp, callToday, extra }),
-            // })
+            await fetch("https://https://eden-stone.ru/api/v1/callback", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ phone, email, prefWhatsApp, bath, kitchen, extra }),
+            })
 
             // имитация
             await new Promise((r) => setTimeout(r, 600))
