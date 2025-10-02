@@ -247,6 +247,7 @@ export function Header() {
                                     placeholder="Опишите удобное время, вопрос по материалу и т.п."
                                     rows={4}
                                     value={extra}
+                                    className='border-green-700'
                                     onChange={(e) => setExtra(e.target.value)}
                                 />
                             </div>
