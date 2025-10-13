@@ -3,7 +3,6 @@ import Link from "next/link";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import type { DecorItem } from "@/lib/decor-data";
-import {useState} from "react";
 
 export function DecorCard({ item }: { item: DecorItem }) {
 

@@ -102,7 +102,7 @@ export default function DecorDetailsClient({ slug }: { slug: string }) {
     const [kitchen, setKitchen] = useState(false)
     const [bath, setBath] = useState(false)
 
-    const openDialog = () => setIsDialogOpen(true)
+    // const openDialog = () => setIsDialogOpen(true)
     const closeDialog = () => {
         setIsDialogOpen(false)
         // не очищаем моментально, чтобы пользователь мог повторно открыть и поправить;
