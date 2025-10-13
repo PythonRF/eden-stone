@@ -5,6 +5,19 @@ import Image from "next/image";
 import Link from "next/link";
 import type { DecorItem } from "@/lib/decor-data";
 import { toStoneType, toSurfaceType } from "@/lib/decor-data";
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle
+} from "@/components/ui/dialog";
+import {Label} from "@/components/ui/label";
+import {Input} from "@/components/ui/input";
+import {Checkbox} from "@/components/ui/checkbox";
+import {Textarea} from "@/components/ui/textarea";
+import {Button} from "@/components/ui/button";
 
 type ApiDecor = {
     id: number;
@@ -61,9 +74,81 @@ function getErrorMessage(e: unknown): string {
 }
 
 export default function DecorDetailsClient({ slug }: { slug: string }) {
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
+
     const [item, setItem] = useState<DecorItem | null>(null);
     const [loading, setLoading] = useState(true);
     const [err, setErr] = useState<string | null>(null);
+
+
+    // форма
+    const [phone, setPhone] = useState("")
+    const [email, setEmail] = useState("")
+    const [prefWhatsApp, setPrefWhatsApp] = useState(false)
+    const [consent, setConsent] = useState(false)
+    const [extra, setExtra] = useState("")
+    const [submitting, setSubmitting] = useState(false)
+
+    const resetForm = () => {
+        setPhone("")
+        setEmail("")
+        setPrefWhatsApp(false)
+        setKitchen(false)
+        setBath(false)
+        setConsent(false)
+        setExtra("")
+        setErr(null)
+    }
+    const [kitchen, setKitchen] = useState(false)
+    const [bath, setBath] = useState(false)
+
+    const openDialog = () => setIsDialogOpen(true)
+    const closeDialog = () => {
+        setIsDialogOpen(false)
+        // не очищаем моментально, чтобы пользователь мог повторно открыть и поправить;
+        // очистим при успешной отправке
+    }
+
+    const onSubmit = async (e: React.FormEvent) => {
+        e.preventDefault()
+        setErr(null)
+
+        // простая валидация
+        if (!phone.trim()) {
+            setErr("Укажите номер телефона")
+            return
+        }
+        if (!consent) {
+            setErr("Нужно согласиться с обработкой данных")
+            return
+        }
+        // опциональная валидация email
+        if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            setErr("Некорректный email")
+            return
+        }
+
+        setSubmitting(true)
+        try {
+            // TODO: сюда вставь свой запрос
+            // пример:
+            await fetch("https://eden-stone.ru/api/v1/callback", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ phone, email, prefWhatsApp, bath, kitchen, extra }),
+            })
+
+            // имитация
+            await new Promise((r) => setTimeout(r, 600))
+
+            resetForm()
+            setIsDialogOpen(false)
+        } catch {
+            setErr("Не удалось отправить заявку")
+        } finally {
+            setSubmitting(false)
+        }
+    }
 
     useEffect(() => {
         if (!slug) return;
@@ -210,11 +295,153 @@ export default function DecorDetailsClient({ slug }: { slug: string }) {
 
                     {item.description ? <p className="text-muted-foreground">{item.description}</p> : null}
 
-                    <div className="p-2 inline-flex items-center justify-center px-8 h-10 rounded-md border bg-primary text-primary-foreground hover:opacity-90">
+                    <button
+                        type="button"
+                        onClick={() => setIsDialogOpen(true)}
+                        className="p-2 inline-flex items-center justify-center px-8 h-10 rounded-md border bg-primary text-primary-foreground hover:opacity-90"
+                        aria-haspopup="dialog"
+                    >
                         Рассчитать стоимость
-                    </div>
+                    </button>
                 </div>
             </div>
+            <Dialog
+                open={isDialogOpen}
+                onOpenChange={setIsDialogOpen}
+            >
+                <DialogContent
+                    // ⛔️ не даём Safari авто-прокрутить к первому input
+                    onOpenAutoFocus={(e) => e.preventDefault()}
+                    className="
+      p-0
+      w-[min(100vw-16px,520px)]
+      sm:max-w-[520px]
+      max-h-[calc(100dvh-16px)]  /* динамический вьюпорт против клавы */
+      overflow-hidden            /* скроллим внутреннюю колонку */
+      supports-[height:100dvh]:max-h-[calc(100dvh-16px)]
+      rounded-xl
+    "
+                >
+                    <div className="flex flex-col max-h-inherit"> {/* колонка на всю высоту */}
+                        <DialogHeader className="p-4 sticky top-0 bg-background z-10 border-b">
+                            <DialogTitle>Заказать звонок</DialogTitle>
+                            <DialogDescription>
+                                Оставьте контакты — мы перезвоним и ответим на вопросы.
+                            </DialogDescription>
+                        </DialogHeader>
+
+                        {/* Прокручиваемая середина */}
+                        <div className="px-4 py-3 overflow-y-auto overscroll-contain grow">
+                            <form onSubmit={onSubmit} className="space-y-4">
+                                <div className="grid gap-3">
+                                    <div className="grid gap-1.5">
+                                        <Label htmlFor="phone">Телефон *</Label>
+                                        <Input
+                                            id="phone"
+                                            type="tel"
+                                            inputMode="tel"
+                                            placeholder="+7 900 000-00-00"
+                                            className="border-[#006C36] text-base" /* ≥16px, чтобы iOS не зумил */
+                                            value={phone}
+                                            onChange={(e) => setPhone(e.target.value)}
+                                            required
+                                        />
+                                    </div>
+
+                                    <div className="grid gap-1.5">
+                                        <Label htmlFor="email">Email</Label>
+                                        <Input
+                                            id="email"
+                                            type="email"
+                                            placeholder="you@example.com"
+                                            className="border-[#006C36] text-base"
+                                            value={email}
+                                            onChange={(e) => setEmail(e.target.value)}
+                                        />
+                                    </div>
+
+                                    <div className="grid gap-2">
+                                        <Label>Место установки</Label>
+                                        <div className="flex flex-col gap-2">
+                                            <label className="flex items-center gap-2">
+                                                <Checkbox
+                                                    className="border-[#006C36] cursor-pointer"
+                                                    checked={kitchen}
+                                                    onCheckedChange={(v) => setKitchen(Boolean(v))}
+                                                />
+                                                <span className="text-sm">Кухня</span>
+                                            </label>
+                                            <label className="flex items-center gap-2">
+                                                <Checkbox
+                                                    className="border-[#006C36] cursor-pointer"
+                                                    checked={bath}
+                                                    onCheckedChange={(v) => setBath(Boolean(v))}
+                                                />
+                                                <span className="text-sm">Ванная</span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div className="grid gap-1.5">
+                                        <Label htmlFor="extra">Дополнительная информация</Label>
+                                        <Textarea
+                                            id="extra"
+                                            placeholder="Опишите удобное время, вопрос по материалу и т.п."
+                                            rows={4}
+                                            value={extra}
+                                            className="border-green-700 text-base"
+                                            onChange={(e) => setExtra(e.target.value)}
+                                        />
+                                    </div>
+
+                                    <div className="grid gap-2">
+                                        <Label>Опции</Label>
+                                        <div className="flex flex-col gap-2">
+                                            <label className="flex items-center gap-2">
+                                                <Checkbox
+                                                    className="border-[#006C36] cursor-pointer"
+                                                    checked={prefWhatsApp}
+                                                    onCheckedChange={(v) => setPrefWhatsApp(Boolean(v))}
+                                                />
+                                                <span className="text-sm">Предпочитаю WhatsApp</span>
+                                            </label>
+                                            <label className="flex items-center gap-2">
+                                                <Checkbox
+                                                    className="border-[#006C36] cursor-pointer"
+                                                    checked={consent}
+                                                    onCheckedChange={(v) => setConsent(Boolean(v))}
+                                                />
+                                                <span className="text-sm">
+                    Согласен с обработкой персональных данных *
+                  </span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    {err && <p className="text-sm text-red-500">{err}</p>}
+                                </div>
+
+                                {/* Футер делаем отдельным sticky ниже */}
+                            </form>
+                        </div>
+
+                        {/* Фиксированный футер с кнопками */}
+                        <DialogFooter className="p-4 sticky bottom-0 bg-background border-t gap-2 sm:gap-0">
+                            <Button
+                                type="button"
+                                variant="outline"
+                                onClick={closeDialog}
+                                disabled={submitting}
+                            >
+                                Отмена
+                            </Button>
+                            <Button formAction="submit" disabled={submitting} onClick={onSubmit}>
+                                {submitting ? "Отправляем…" : "Отправить заявку"}
+                            </Button>
+                        </DialogFooter>
+                    </div>
+                </DialogContent>
+            </Dialog>
         </section>
     );
 }

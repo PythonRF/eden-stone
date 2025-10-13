@@ -3,8 +3,10 @@ import Link from "next/link";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import type { DecorItem } from "@/lib/decor-data";
+import {useState} from "react";
 
 export function DecorCard({ item }: { item: DecorItem }) {
+
     return (
         <Link href={`/decor/${item.slug}`}>
             <Card className="group overflow-hidden transition hover:shadow-lg">
@@ -30,7 +32,8 @@ export function DecorCard({ item }: { item: DecorItem }) {
                 <CardContent className="pt-0">
                     <div className="flex items-center justify-between">
                         <span className="text-sm text-muted-foreground">{item.brand}</span>
-                        <strong className="text-base">{item.price.toLocaleString()} ₽/м²</strong>
+                        {/*<strong className="text-base">{item.price.toLocaleString()} ₽/м²</strong>*/}
+                        <strong className="text-xs">Цену уточняйте через менеджера</strong>
                     </div>
                 </CardContent>
             </Card>

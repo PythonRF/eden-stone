@@ -9,38 +9,32 @@ const galleryItems = [
     id: 1,
     title: "Кухонная столешница из кварца",
     category: "kitchen",
-    image: "/modern-kitchen-quartz-countertop.png",
+    image: "/modern-kitchen-quartz-countertop.jpg",
   },
   {
     id: 2,
     title: "Акриловая столешница с интегрированной мойкой",
     category: "kitchen",
-    image: "/acrylic-countertop-integrated-sink.png",
+    image: "/acrylic-countertop-integrated-sink.jpg",
   },
   {
     id: 3,
     title: "Подоконник из искусственного камня",
     category: "windowsill",
-    image: "/artificial-stone-window-sill.png",
+    image: "/artificial-stone-window-sill1.jpg",
   },
   {
     id: 4,
     title: "Барная стойка в современном стиле",
     category: "bar",
-    image: "/modern-bar-counter-artificial-stone.png",
+    image: "/modern-bar-counter-artificial-stone.jpg",
   },
   {
     id: 5,
     title: "Столешница для ванной комнаты",
     category: "bathroom",
-    image: "/bathroom-artificial-stone-countertop.png",
-  },
-  {
-    id: 6,
-    title: "Кухонный остров с подсветкой",
-    category: "kitchen",
-    image: "/kitchen-island-artificial-stone-lighting.png",
-  },
+    image: "/bathroom-artificial-stone-countertop.jpg",
+  }
 ]
 
 const categories = [

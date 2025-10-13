@@ -105,7 +105,8 @@ export function Contact() {
                     </div>
                     <div>
                       <h3 className="font-semibold mb-1">Телефон</h3>
-                      <p className="text-muted-foreground">+7 (925) 724-49-95</p>
+                        <a href="tel:+79257244995"><p className="text-muted-foreground">+7 (925) 724-49-95</p></a>
+
                     </div>
                   </div>
                 </CardContent>
@@ -119,7 +120,8 @@ export function Contact() {
                     </div>
                     <div>
                       <h3 className="font-semibold mb-1">Email</h3>
-                      <p className="text-muted-foreground">zakaz@eden-stone.ru</p>
+                        <a href="mailto:zakaz@eden-stone.ru"><p className="text-muted-foreground">zakaz@eden-stone.ru</p></a>
+
                     </div>
                   </div>
                 </CardContent>
@@ -133,7 +135,8 @@ export function Contact() {
                     </div>
                     <div>
                       <h3 className="font-semibold mb-1">Адрес</h3>
-                      <p className="text-muted-foreground">г.Реутов, ул.Проспект мира, д26</p>
+                        <a href="https://yandex.ru/maps/-/CLRzmKjF"><p className="text-muted-foreground">г.Реутов, ул.Проспект мира, д26</p></a>
+
                     </div>
                   </div>
                 </CardContent>

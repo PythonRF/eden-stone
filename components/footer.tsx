@@ -26,15 +26,16 @@ export function Footer() {
             <div className="space-y-3 text-sm opacity-80">
               <div className="flex items-center space-x-2">
                 <Phone className="h-4 w-4" />
-                <span>+7 (925) 724-49-95</span>
+                  <a href="tel:+79257244995"><span>+7 (925) 724-49-95</span></a>
               </div>
               <div className="flex items-center space-x-2">
-                <Mail className="h-4 w-4" />
-                <span>zakaz@eden-stone.ru</span>
+                  <a href="mailto:zakaz@eden-stone.ru" className="flex"><Mail className="h-4 w-4 mr-2 mt-0.5" />
+                      <span>zakaz@eden-stone.ru</span></a>
+
               </div>
               <div className="flex items-start space-x-2">
-                <MapPin className="h-4 w-4 mt-0.5" />
-                <span>г.Реутов, ул.Проспект мира, д26</span>
+                <a href="https://yandex.ru/maps/-/CLRzmKjF" className="flex"><MapPin className="h-4 w-4 mt-0.5 mr-2" />
+                    <span>г.Реутов, ул.Проспект мира, д26</span></a>
               </div>
             </div>
           </div>

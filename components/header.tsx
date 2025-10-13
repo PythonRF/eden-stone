@@ -135,6 +135,8 @@ export function Header() {
                                 </a>
                             </nav>
 
+                            <Button onClick={openDialog} className=' md:hidden cursor-pointer'>Заказать звонок</Button>
+
                             {/* Mobile Menu Button */}
                             <button
                                 className="md:hidden"
@@ -149,12 +151,12 @@ export function Header() {
                     {/* Contact Info (видна на lg+) */}
                     <div className="hidden lg:flex items-center space-x-4">
                         <div className="flex items-center space-x-2 text-sm">
-                            <Phone className="h-4 w-4 text-primary" />
-                            <span>+7 (925) 724-49-95</span>
+                            <a href="tel:+79257244995" className='flex'><Phone className="h-4 w-4 mr-2 text-primary" />
+                            <span>+7 (925) 724-49-95</span></a>
                         </div>
 
                         {/* Триггер диалога */}
-                        <Button onClick={openDialog}>Заказать звонок</Button>
+                        <Button onClick={openDialog} className='cursor-pointer'>Заказать звонок</Button>
                     </div>
                 </div>
 
@@ -190,90 +192,128 @@ export function Header() {
             </div>
 
             {/* Модальное окно */}
-            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-                {/* Можно было бы использовать DialogTrigger, но мы управляем состоянием вручную из двух кнопок */}
-                <DialogContent className="sm:max-w-[520px]">
-                    <DialogHeader>
-                        <DialogTitle>Заказать звонок</DialogTitle>
-                        <DialogDescription>
-                            Оставьте контакты — мы перезвоним и ответим на вопросы.
-                        </DialogDescription>
-                    </DialogHeader>
+            <Dialog
+                open={isDialogOpen}
+                onOpenChange={setIsDialogOpen}
+            >
+                <DialogContent
+                    // ⛔️ не даём Safari авто-прокрутить к первому input
+                    onOpenAutoFocus={(e) => e.preventDefault()}
+                    className="
+      p-0
+      w-[min(100vw-16px,520px)]
+      sm:max-w-[520px]
+      max-h-[calc(100dvh-16px)]  /* динамический вьюпорт против клавы */
+      overflow-hidden            /* скроллим внутреннюю колонку */
+      supports-[height:100dvh]:max-h-[calc(100dvh-16px)]
+      rounded-xl
+    "
+                >
+                    <div className="flex flex-col max-h-inherit"> {/* колонка на всю высоту */}
+                        <DialogHeader className="p-4 sticky top-0 bg-background z-10 border-b">
+                            <DialogTitle>Заказать звонок</DialogTitle>
+                            <DialogDescription>
+                                Оставьте контакты — мы перезвоним и ответим на вопросы.
+                            </DialogDescription>
+                        </DialogHeader>
 
-                    <form onSubmit={onSubmit} className="space-y-4">
-                        <div className="grid gap-3">
-                            <div className="grid gap-1.5">
-                                <Label htmlFor="phone">Телефон *</Label>
-                                <Input
-                                    id="phone"
-                                    type="tel"
-                                    inputMode="tel"
-                                    placeholder="+7 900 000-00-00"
-                                    value={phone}
-                                    onChange={(e) => setPhone(e.target.value)}
-                                    required
-                                />
-                            </div>
+                        {/* Прокручиваемая середина */}
+                        <div className="px-4 py-3 overflow-y-auto overscroll-contain grow">
+                            <form onSubmit={onSubmit} className="space-y-4">
+                                <div className="grid gap-3">
+                                    <div className="grid gap-1.5">
+                                        <Label htmlFor="phone">Телефон *</Label>
+                                        <Input
+                                            id="phone"
+                                            type="tel"
+                                            inputMode="tel"
+                                            placeholder="+7 900 000-00-00"
+                                            className="border-[#006C36] text-base" /* ≥16px, чтобы iOS не зумил */
+                                            value={phone}
+                                            onChange={(e) => setPhone(e.target.value)}
+                                            required
+                                        />
+                                    </div>
 
-                            <div className="grid gap-1.5">
-                                <Label htmlFor="email">Email</Label>
-                                <Input
-                                    id="email"
-                                    type="email"
-                                    placeholder="you@example.com"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                />
-                            </div>
+                                    <div className="grid gap-1.5">
+                                        <Label htmlFor="email">Email</Label>
+                                        <Input
+                                            id="email"
+                                            type="email"
+                                            placeholder="you@example.com"
+                                            className="border-[#006C36] text-base"
+                                            value={email}
+                                            onChange={(e) => setEmail(e.target.value)}
+                                        />
+                                    </div>
 
-                            <div className="grid gap-2">
-                                <Label>Место установки</Label>
-                                <div className="flex flex-col gap-2">
-                                    <label className="flex items-center gap-2">
-                                        <Checkbox checked={kitchen} onCheckedChange={(v) => setKitchen(Boolean(v))} />
-                                        <span className="text-sm">Кухня</span>
-                                    </label>
-                                    <label className="flex items-center gap-2">
-                                        <Checkbox checked={bath} onCheckedChange={(v) => setBath(Boolean(v))} />
-                                        <span className="text-sm">Ванная</span>
-                                    </label>
+                                    <div className="grid gap-2">
+                                        <Label>Место установки</Label>
+                                        <div className="flex flex-col gap-2">
+                                            <label className="flex items-center gap-2">
+                                                <Checkbox
+                                                    className="border-[#006C36] cursor-pointer"
+                                                    checked={kitchen}
+                                                    onCheckedChange={(v) => setKitchen(Boolean(v))}
+                                                />
+                                                <span className="text-sm">Кухня</span>
+                                            </label>
+                                            <label className="flex items-center gap-2">
+                                                <Checkbox
+                                                    className="border-[#006C36] cursor-pointer"
+                                                    checked={bath}
+                                                    onCheckedChange={(v) => setBath(Boolean(v))}
+                                                />
+                                                <span className="text-sm">Ванная</span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div className="grid gap-1.5">
+                                        <Label htmlFor="extra">Дополнительная информация</Label>
+                                        <Textarea
+                                            id="extra"
+                                            placeholder="Опишите удобное время, вопрос по материалу и т.п."
+                                            rows={4}
+                                            value={extra}
+                                            className="border-green-700 text-base"
+                                            onChange={(e) => setExtra(e.target.value)}
+                                        />
+                                    </div>
+
+                                    <div className="grid gap-2">
+                                        <Label>Опции</Label>
+                                        <div className="flex flex-col gap-2">
+                                            <label className="flex items-center gap-2">
+                                                <Checkbox
+                                                    className="border-[#006C36] cursor-pointer"
+                                                    checked={prefWhatsApp}
+                                                    onCheckedChange={(v) => setPrefWhatsApp(Boolean(v))}
+                                                />
+                                                <span className="text-sm">Предпочитаю WhatsApp</span>
+                                            </label>
+                                            <label className="flex items-center gap-2">
+                                                <Checkbox
+                                                    className="border-[#006C36] cursor-pointer"
+                                                    checked={consent}
+                                                    onCheckedChange={(v) => setConsent(Boolean(v))}
+                                                />
+                                                <span className="text-sm">
+                    Согласен с обработкой персональных данных *
+                  </span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    {err && <p className="text-sm text-red-500">{err}</p>}
                                 </div>
-                            </div>
 
-                            <div className="grid gap-1.5">
-                                <Label htmlFor="extra">Дополнительная информация</Label>
-                                <Textarea
-                                    id="extra"
-                                    placeholder="Опишите удобное время, вопрос по материалу и т.п."
-                                    rows={4}
-                                    value={extra}
-                                    className='border-green-700'
-                                    onChange={(e) => setExtra(e.target.value)}
-                                />
-                            </div>
-
-                            <div className="grid gap-2">
-                                <Label>Опции</Label>
-                                <div className="flex flex-col gap-2">
-                                    <label className="flex items-center gap-2">
-                                        <Checkbox checked={prefWhatsApp} onCheckedChange={(v) => setPrefWhatsApp(Boolean(v))} />
-                                        <span className="text-sm">Предпочитаю WhatsApp</span>
-                                    </label>
-                                    <label className="flex items-center gap-2">
-                                        <Checkbox checked={consent} onCheckedChange={(v) => setConsent(Boolean(v))} />
-                                        <span className="text-sm">
-                      Согласен с обработкой персональных данных *
-                    </span>
-                                    </label>
-                                </div>
-                            </div>
-
-
-
-                            {err && <p className="text-sm text-red-500">{err}</p>}
+                                {/* Футер делаем отдельным sticky ниже */}
+                            </form>
                         </div>
 
-                        <DialogFooter className="gap-2 sm:gap-0">
+                        {/* Фиксированный футер с кнопками */}
+                        <DialogFooter className="p-4 sticky bottom-0 bg-background border-t gap-2 sm:gap-0">
                             <Button
                                 type="button"
                                 variant="outline"
@@ -282,13 +322,14 @@ export function Header() {
                             >
                                 Отмена
                             </Button>
-                            <Button type="submit" disabled={submitting}>
+                            <Button formAction="submit" disabled={submitting} onClick={onSubmit}>
                                 {submitting ? "Отправляем…" : "Отправить заявку"}
                             </Button>
                         </DialogFooter>
-                    </form>
+                    </div>
                 </DialogContent>
             </Dialog>
+
         </header>
     )
 }

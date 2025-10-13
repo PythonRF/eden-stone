@@ -15,7 +15,7 @@ export function Hero() {
                                 Столешницы из <span className="text-primary">искусственного камня</span> премиум качества
                             </h1>
                             <p className="text-xl text-muted-foreground text-pretty">
-                                Изготавливаем кварцевые и акриловые столешницы для кухни, подоконники и другие изделия из искусственного
+                                Изготавливаем поверхности из кварцевого агломерата и акрилового камня для кухни, подоконников и других изделий из искусственного
                                 камня. Собственное производство, гарантия качества.
                             </p>
                         </div>
@@ -28,7 +28,7 @@ export function Hero() {
                             {/*    </Link>*/}
                             {/*</Button>*/}
 
-                            <Link href="/decor" ><Button variant="outline" size="lg" className="text-lg px-8 bg-transparent cursor-pointer">
+                            <Link href="/decor" ><Button variant="outline" size="lg" className="text-lg px-8 border-[#006C36] cursor-pointer ">
                                 Каталог декоров <ArrowRight className="ml-2 h-5 w-5" />
                             </Button></Link>
                         </div>

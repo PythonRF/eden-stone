@@ -1,6 +1,6 @@
 import type React from "react"
 import {Suspense} from "react"
-import type {Metadata} from "next"
+import type {Metadata, Viewport} from "next"
 import {GeistSans} from "geist/font/sans"
 import {GeistMono} from "geist/font/mono"
 import {Analytics} from "@vercel/analytics/next"
@@ -13,7 +13,6 @@ export const metadata: Metadata = {
     "Изготовление столешниц для кухни, подоконников и изделий из искусственного камня. Кварцевые и акриловые поверхности высокого качества. Замер, изготовление, установка.",
   keywords:
     "столешницы из искусственного камня, кварцевые столешницы, акриловые столешницы, подоконники из камня, изделия из искусственного камня, столешницы для кухни",
-  generator: "v0.app",
   openGraph: {
     title: "Столешницы из искусственного камня | Изделия из кварца и акрила",
     description:
@@ -22,6 +21,12 @@ export const metadata: Metadata = {
     locale: "ru_RU",
   },
 }
+
+export const viewport: Viewport = {
+    width: "device-width",
+    initialScale: 1,
+    viewportFit: "cover",
+};
 
 export default function RootLayout({
   children,
