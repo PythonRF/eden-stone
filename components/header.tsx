@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import React, { useState } from "react"
 import { usePathname } from "next/navigation"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
@@ -182,7 +182,7 @@ export function Header() {
                             <div className="pt-4 border-t">
                                 <div className="flex items-center space-x-2 text-sm mb-4">
                                     <Phone className="h-4 w-4 text-primary" />
-                                    <span>+7 (495) 123-45-67</span>
+                                    <a href="tel:+79257244995"><p className="text-muted-foreground">+7 (925) 724-49-95</p></a>
                                 </div>
                                 <Button className="w-full" onClick={openDialog}>Заказать звонок</Button>
                             </div>
