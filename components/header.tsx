@@ -153,6 +153,8 @@ export function Header() {
                         <div className="flex items-center space-x-2 text-sm">
                             <a href="tel:+79257244995" className='flex'><Phone className="h-4 w-4 mr-2 text-primary" />
                             <span>+7 (925) 724-49-95</span></a>
+                            <a href="tel:+79254281612" className='flex'><Phone className="h-4 w-4 mr-2 text-primary" />
+                            <span>+7 (925) 428-16-12</span></a>
                         </div>
 
                         {/* Триггер диалога */}
@@ -183,6 +185,7 @@ export function Header() {
                                 <div className="flex items-center space-x-2 text-sm mb-4">
                                     <Phone className="h-4 w-4 text-primary" />
                                     <a href="tel:+79257244995"><p className="text-muted-foreground">+7 (925) 724-49-95</p></a>
+                                    <a href="tel:+79254281612"><p className="text-muted-foreground">+7 (925) 428-16-12</p></a>
                                 </div>
                                 <Button className="w-full" onClick={openDialog}>Заказать звонок</Button>
                             </div>

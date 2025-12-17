@@ -1,4 +1,5 @@
 import { Phone, Mail, MapPin } from "lucide-react"
+import type React from "react";
 
 export function Footer() {
   return (
@@ -27,6 +28,8 @@ export function Footer() {
               <div className="flex items-center space-x-2">
                 <Phone className="h-4 w-4" />
                   <a href="tel:+79257244995"><span>+7 (925) 724-49-95</span></a>
+                  <a href="tel:+79254281612"><span>+7 (925) 428-16-12</span></a>
+
               </div>
               <div className="flex items-center space-x-2">
                   <a href="mailto:zakaz@eden-stone.ru" className="flex"><Mail className="h-4 w-4 mr-2 mt-0.5" />
