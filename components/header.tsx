@@ -293,7 +293,7 @@ export function Header() {
                                                     checked={prefWhatsApp}
                                                     onCheckedChange={(v) => setPrefWhatsApp(Boolean(v))}
                                                 />
-                                                <span className="text-sm">Предпочитаю WhatsApp</span>
+                                                <span className="text-sm">Предпочитаю мессенджеры</span>
                                             </label>
                                             <label className="flex items-center gap-2">
                                                 <Checkbox
